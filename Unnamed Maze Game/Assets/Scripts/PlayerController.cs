@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Transform bulletSpawnPoint;
     [SerializeField] private GameObject muzzleFlashPrefab;
     [SerializeField] private GameObject bulletPrefab;
-    
+
     private void Start() {
         rb2d = GetComponent<Rigidbody2D>();
     }
@@ -37,9 +37,14 @@ public class PlayerController : MonoBehaviour {
             GameObject muzzleFlash = Instantiate(muzzleFlashPrefab, bulletSpawnPoint.position, Quaternion.identity);
             Destroy(muzzleFlash, 0.1f);
             GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
-            bullet.GetComponent<Rigidbody2D>().AddForce((Vector2)(-transform.up * bulletForce), ForceMode2D.Impulse);
+            bullet.GetComponent<Rigidbody2D>().AddForce((Vector2) (-transform.up * bulletForce), ForceMode2D.Impulse);
             Destroy(bullet, 2f);
         }
     }
-    
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.CompareTag("Goal")) {
+            GameEvents.getInstance().ReachedGoal();
+        }
+    }
 }

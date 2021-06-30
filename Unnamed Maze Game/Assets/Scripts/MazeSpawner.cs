@@ -6,12 +6,15 @@ using UnityEngine;
 public class MazeSpawner : MonoBehaviour {
     private MazeGenerator mazeGenerator;
     private bool[,] maze;
+    [SerializeField] private int rows, cols;
     [SerializeField] private GameObject wallPrefab;
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject goalPrefab;
 
     private void Start() {
         mazeGenerator = new KruskalMazeGenerator();
+        mazeGenerator.setRows(rows);
+        mazeGenerator.setCols(cols);
         SpawnMaze();
         GameEvents.getInstance().onReachedGoal += SpawnMaze;
     }

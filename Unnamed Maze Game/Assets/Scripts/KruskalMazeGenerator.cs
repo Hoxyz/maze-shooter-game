@@ -7,12 +7,12 @@ public class KruskalMazeGenerator : MazeGenerator{
     private DisjointSet ds = new DisjointSet();
     private bool[,] maze;
     private List<((int, int), (int, int))> edges;
-
-    public void setRows(int rows) {
+    
+    public override void setRows(int rows) {
         this.rows = rows;
     }
 
-    public void setCols(int cols) {
+    public override void setCols(int cols) {
         this.cols = cols;
     }
     

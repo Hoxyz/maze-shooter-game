@@ -4,15 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Unit : MonoBehaviour {
-    public Transform target;
-    private float speed = 5f;
+    private Transform target;
+    [SerializeField] private float speed = 3f;
     private Vector2[] path;
     private int targetIndex;
 
     private void Update() {
-        //if (Input.GetKeyDown(KeyCode.Space)) 
+        GameObject playerGameObject = GameObject.FindGameObjectWithTag("Player");
+        if (playerGameObject != null) {
+            target = playerGameObject.GetComponent<Transform>();
+        }
+        if (target != null && transform.position != target.position) {
             PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
-            
+        }
     }
 
     private void OnPathFound(Vector2[] newPath, bool pathSuccessful) {
@@ -25,8 +29,7 @@ public class Unit : MonoBehaviour {
     }
 
     IEnumerator FollowPath() {
-        if (path == null) yield break;
-        
+        if (path.Length < 1) yield break;
         Vector2 currentWaypoint = path[0];
 
         while (true) {
@@ -56,6 +59,12 @@ public class Unit : MonoBehaviour {
                     Gizmos.DrawLine(path[i-1], path[i]);
                 }
             }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.CompareTag("Bullet")) {
+            Destroy(this.gameObject);
         }
     }
 }

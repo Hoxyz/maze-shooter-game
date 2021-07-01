@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class MazeSpawner : MonoBehaviour {
     private MazeGenerator mazeGenerator;
@@ -10,8 +11,9 @@ public class MazeSpawner : MonoBehaviour {
     [SerializeField] private GameObject wallPrefab;
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject goalPrefab;
+    [SerializeField] private GameObject enemyPrefab;
 
-    private void Start() {
+    private void Awake() {
         mazeGenerator = new KruskalMazeGenerator();
         mazeGenerator.setRows(rows);
         mazeGenerator.setCols(cols);
@@ -29,9 +31,13 @@ public class MazeSpawner : MonoBehaviour {
         GameObject[] walls = GameObject.FindGameObjectsWithTag("Wall");
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         GameObject goal = GameObject.FindGameObjectWithTag("Goal");
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         
         foreach (GameObject wall in walls) {
             Destroy(wall);
+        }
+        foreach (GameObject enemy in enemies) {
+            Destroy(enemy);
         }
         Destroy(player);
         Destroy(goal);
@@ -52,6 +58,11 @@ public class MazeSpawner : MonoBehaviour {
                 }
                 if (maze[i, j]) {
                     Instantiate(wallPrefab, position, Quaternion.identity);
+                }
+                else {
+                    if (Random.Range(0f, 1f) < 0.1f) {
+                        Instantiate(enemyPrefab, position, Quaternion.identity);
+                    }
                 }
             }
         }

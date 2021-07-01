@@ -22,9 +22,9 @@ public class Pathfinding : MonoBehaviour {
         AStarNode startNode = grid.NodeFromWorldPosition(startPosition);
         AStarNode targetNode = grid.NodeFromWorldPosition(targetPosition);
 
-        if (!startNode.walkable || !targetNode.walkable) {
-            yield break;
-        }
+        // if (!startNode.walkable || !targetNode.walkable) {
+        //     yield break;
+        // }
 
         Heap<AStarNode> openSet = new Heap<AStarNode>(grid.MaxSize);
         HashSet<AStarNode> closedSet = new HashSet<AStarNode>();

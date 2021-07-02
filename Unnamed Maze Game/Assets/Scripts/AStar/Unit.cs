@@ -65,6 +65,7 @@ public class Unit : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.CompareTag("Bullet")) {
             Destroy(this.gameObject);
+            other.gameObject.tag = "DeadBullet";
         }
     }
 }

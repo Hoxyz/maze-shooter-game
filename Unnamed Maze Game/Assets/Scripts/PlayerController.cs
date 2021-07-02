@@ -7,11 +7,13 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
     private Rigidbody2D rb2d;
+    private float nextShootTime = 0f;
     [SerializeField] private float shootForce = 5f;
     [SerializeField] private float bulletForce = 20f;
     [SerializeField] private Transform bulletSpawnPoint;
     [SerializeField] private GameObject muzzleFlashPrefab;
     [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private float shootRate;
 
     private void Start() {
         rb2d = GetComponent<Rigidbody2D>();
@@ -32,11 +34,13 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Shoot() {
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButton(0) && Time.time > nextShootTime) {
+            nextShootTime = Time.time + shootRate;
             rb2d.AddForce(transform.up * shootForce, ForceMode2D.Impulse);
             GameObject muzzleFlash = Instantiate(muzzleFlashPrefab, bulletSpawnPoint.position, Quaternion.identity);
             Destroy(muzzleFlash, 0.1f);
             GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+            bullet.transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles - new Vector3(0f, 0f, 180f));
             bullet.GetComponent<Rigidbody2D>().AddForce((Vector2) (-transform.up * bulletForce), ForceMode2D.Impulse);
             Destroy(bullet, 2f);
         }

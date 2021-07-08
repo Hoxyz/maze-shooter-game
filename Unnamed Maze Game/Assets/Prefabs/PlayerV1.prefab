@@ -132,7 +132,8 @@ MonoBehaviour:
   bulletForce: 20
   bulletSpawnPoint: {fileID: 2339201367939439902}
   muzzleFlashPrefab: {fileID: 7351167200293580280, guid: 98c6c1a9df8c6144a8171050887e5f3b, type: 3}
-  bulletPrefab: {fileID: 1977003387337837280, guid: 2d5378cc04fb6f84d999c9135d7293c2, type: 3}
+  bullet1Prefab: {fileID: 1977003387337837280, guid: 2d5378cc04fb6f84d999c9135d7293c2, type: 3}
+  bullet2Prefab: {fileID: 613126695434423309, guid: dea4368e961b0364393d8cf90394eb4b, type: 3}
   shootRate: 0.15
 --- !u!50 &2339201369065580670
 Rigidbody2D:

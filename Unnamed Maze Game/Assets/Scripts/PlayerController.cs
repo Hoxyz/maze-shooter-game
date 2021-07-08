@@ -8,11 +8,13 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
     private Rigidbody2D rb2d;
     private float nextShootTime = 0f;
+    private bool bulletToggle = false;
     [SerializeField] private float shootForce = 5f;
     [SerializeField] private float bulletForce = 20f;
     [SerializeField] private Transform bulletSpawnPoint;
     [SerializeField] private GameObject muzzleFlashPrefab;
-    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private GameObject bullet1Prefab;
+    [SerializeField] private GameObject bullet2Prefab;
     [SerializeField] private float shootRate;
 
     private void Start() {
@@ -22,6 +24,9 @@ public class PlayerController : MonoBehaviour {
     void Update() {
         RotateTowardsMouse();
         Shoot();
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            bulletToggle = !bulletToggle;
+        }
     }
 
     private void RotateTowardsMouse() {
@@ -39,7 +44,7 @@ public class PlayerController : MonoBehaviour {
             rb2d.AddForce(transform.up * shootForce, ForceMode2D.Impulse);
             GameObject muzzleFlash = Instantiate(muzzleFlashPrefab, bulletSpawnPoint.position, Quaternion.identity);
             Destroy(muzzleFlash, 0.1f);
-            GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+            GameObject bullet = Instantiate(bulletToggle ? bullet2Prefab : bullet1Prefab, bulletSpawnPoint.position, Quaternion.identity);
             bullet.transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles - new Vector3(0f, 0f, 180f));
             bullet.GetComponent<Rigidbody2D>().AddForce((Vector2) (-transform.up * bulletForce), ForceMode2D.Impulse);
             Destroy(bullet, 2f);

@@ -22,9 +22,9 @@ public class MazeSpawner : MonoBehaviour {
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
+        /*if (Input.GetKeyDown(KeyCode.Space)) {
             SpawnMaze();
-        }
+        }*/
     }
 
     private void SpawnMaze() {

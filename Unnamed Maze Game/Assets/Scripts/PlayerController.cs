@@ -9,13 +9,19 @@ public class PlayerController : MonoBehaviour {
     private Rigidbody2D rb2d;
     private float nextShootTime = 0f;
     private bool bulletToggle = false;
+
     [SerializeField] private float shootForce = 5f;
     [SerializeField] private float bulletForce = 20f;
+    [SerializeField] private float shootRate;
     [SerializeField] private Transform bulletSpawnPoint;
     [SerializeField] private GameObject muzzleFlashPrefab;
+    [SerializeField] private GameObject muzzleFlashVulnerable;
     [SerializeField] private GameObject bullet1Prefab;
     [SerializeField] private GameObject bullet2Prefab;
-    [SerializeField] private float shootRate;
+    [SerializeField] private GameObject glove;
+    [SerializeField] private Sprite vulnerablePlayerSprite;
+    [SerializeField] private Sprite normalPlayerSprite;
+    
 
     private void Start() {
         rb2d = GetComponent<Rigidbody2D>();
@@ -26,6 +32,12 @@ public class PlayerController : MonoBehaviour {
         Shoot();
         if (Input.GetKeyDown(KeyCode.Space)) {
             bulletToggle = !bulletToggle;
+            if (GetComponent<SpriteRenderer>().sprite == normalPlayerSprite) {
+                GetComponent<SpriteRenderer>().sprite = vulnerablePlayerSprite;
+            }
+            else {
+                GetComponent<SpriteRenderer>().sprite = normalPlayerSprite;
+            }
         }
     }
 
@@ -42,7 +54,7 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetMouseButton(0) && Time.time > nextShootTime) {
             nextShootTime = Time.time + shootRate;
             rb2d.AddForce(transform.up * shootForce, ForceMode2D.Impulse);
-            GameObject muzzleFlash = Instantiate(muzzleFlashPrefab, bulletSpawnPoint.position, Quaternion.identity);
+            GameObject muzzleFlash = Instantiate(bulletToggle ? muzzleFlashVulnerable : muzzleFlashPrefab, bulletSpawnPoint.position, Quaternion.identity);
             Destroy(muzzleFlash, 0.1f);
             GameObject bullet = Instantiate(bulletToggle ? bullet2Prefab : bullet1Prefab, bulletSpawnPoint.position, Quaternion.identity);
             bullet.transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles - new Vector3(0f, 0f, 180f));
@@ -54,6 +66,12 @@ public class PlayerController : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.CompareTag("Goal")) {
             GameEvents.getInstance().ReachedGoal();
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        if (other.contacts[0].otherCollider.transform.gameObject.name == "Glove") {
+            glove.GetComponent<Glove>().Collision(other);
         }
     }
 }

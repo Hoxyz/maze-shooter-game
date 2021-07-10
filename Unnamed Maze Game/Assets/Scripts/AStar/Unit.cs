@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Unit : MonoBehaviour {
+public class Unit : MonoBehaviour, IDamageable {
     private Transform target;
     [SerializeField] private float speed = 3f;
     private Vector2[] path;
     private int targetIndex;
+    private float currentHealth = 5f;
 
     private void Update() {
         GameObject playerGameObject = GameObject.FindGameObjectWithTag("Player");
@@ -63,9 +64,18 @@ public class Unit : MonoBehaviour {
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
-        if (other.gameObject.CompareTag("Bullet")) {
-            Destroy(this.gameObject);
-            other.gameObject.tag = "DeadBullet";
+        List<IDamaging> damagings;
+        InterfaceUtility.GetInterfaces<IDamaging>(out damagings, other.gameObject);
+        if (damagings.Count > 0) {
+            TakeDamage(damagings[0].Damage);
+            print(damagings[0].Damage);
+        }
+    }
+
+    public void TakeDamage(float damage) {
+        currentHealth -= damage;
+        if (currentHealth <= 0f) {
+            Destroy(gameObject);
         }
     }
 }

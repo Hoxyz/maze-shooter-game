@@ -15,6 +15,7 @@ public class Unit : MonoBehaviour, IDamageable {
         if (playerGameObject != null) {
             target = playerGameObject.GetComponent<Transform>();
         }
+
         if (target != null && transform.position != target.position) {
             PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
         }
@@ -34,7 +35,7 @@ public class Unit : MonoBehaviour, IDamageable {
         Vector2 currentWaypoint = path[0];
 
         while (true) {
-            if ((Vector2)transform.position == currentWaypoint) {
+            if ((Vector2) transform.position == currentWaypoint) {
                 targetIndex++;
                 if (targetIndex >= path.Length) {
                     yield break;
@@ -57,7 +58,7 @@ public class Unit : MonoBehaviour, IDamageable {
                     Gizmos.DrawLine(transform.position, path[i]);
                 }
                 else {
-                    Gizmos.DrawLine(path[i-1], path[i]);
+                    Gizmos.DrawLine(path[i - 1], path[i]);
                 }
             }
         }

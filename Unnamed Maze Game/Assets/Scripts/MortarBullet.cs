@@ -9,15 +9,17 @@ public class MortarBullet : MonoBehaviour {
     [SerializeField] private float additionalY = 1f; 
     private Vector2 targetPos;
     private float initialScale;
-    private float currentAdditionalY = 0f;
+    private float currentAdditionalY;
     
 
     private void Start() {
         initialScale = transform.localScale.x;
+        
         Tweener.AddTween(() => transform.position.x, (x) => SetPositionX(x), targetPos.x, timeInAir,
             TweenMethods.Linear);
         Tweener.AddTween(() => transform.position.y, (x) => SetPositionY(x), targetPos.y, timeInAir,
             TweenMethods.Linear);
+        
         Tweener.AddTween(() => currentAdditionalY, (x) => AddAdditionalY(x), additionalY, timeInAir / 2f, TweenMethods.SoftLog, () => {
             Tweener.AddTween(() => currentAdditionalY, (x) => AddAdditionalY(x), 0f, timeInAir / 2f, TweenMethods.Quadratic);
         });
@@ -40,7 +42,7 @@ public class MortarBullet : MonoBehaviour {
     }
     
     private void SetPositionY(float y) {
-        transform.position = new Vector2(transform.position.x, y);
+        transform.position = new Vector2(transform.position.x, y + currentAdditionalY);
     }
 
     private void SetScaleX(float x) {
@@ -53,7 +55,6 @@ public class MortarBullet : MonoBehaviour {
 
     private void AddAdditionalY(float y) {
         currentAdditionalY = y;
-        transform.position = new Vector2(transform.position.x, transform.position.y + currentAdditionalY);
     }
 
     public void SetTargetLocation(Vector2 pos) {

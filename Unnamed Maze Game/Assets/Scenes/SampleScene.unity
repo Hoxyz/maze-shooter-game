@@ -256,6 +256,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 2339201369065580666, guid: aa5d19817efe66b438dd67c618739c87, type: 3}
   goalPrefab: {fileID: 7504496723974904165, guid: d3e48cbaae366ec459b2d1fee06eb6a6, type: 3}
   enemyPrefab: {fileID: 5568635180581956473, guid: ea8c819b5acab6b47b5a0153be361ab6, type: 3}
+  mortarEnemyPrefab: {fileID: 9174927374979996137, guid: 056f5cda55e8d19449d9c8b9a4fc16ed, type: 3}
 --- !u!4 &1414212205
 Transform:
   m_ObjectHideFlags: 0
